@@ -3,10 +3,12 @@ package engine
 import (
 	"errors"
 	"game/db"
+	"game/engine/game/tooth"
+	"game/engine/options"
 )
 
 type Manager struct {
-	store	map[int]NewEngine
+	store	map[int]options.NewEngine
 }
 
 var Default = New()
@@ -17,13 +19,13 @@ func Init() error {
 
 func New() *Manager {
 	return &Manager{
-		store: make(map[int]NewEngine),
+		store: make(map[int]options.NewEngine),
 	}
 }
 
-func (m *Manager) plugins() []NewEngine {
-	return []NewEngine {
-
+func (m *Manager) plugins() []options.NewEngine {
+	return []options.NewEngine {
+		tooth.NewEngine,
 	}
 }
 
@@ -45,7 +47,7 @@ func (m *Manager) Register() error {
 	return nil
 }
 
-func (m *Manager) NewGameEngine(id int) (Engine, error) {
+func (m *Manager) NewGameEngine(id int) (options.Engine, error) {
 	f, ok := m.store[id]
 	if !ok {
 		return nil, errors.New("game is not exists")

@@ -3,6 +3,7 @@ package rooms
 import (
 	"game/db"
 	"game/engine"
+	"game/engine/options"
 	"time"
 
 	"github.com/kataras/iris/v12/websocket"
@@ -12,7 +13,7 @@ type Room struct {
 	//game information [const]
 	information	db.Game
 	//game engine
-	engine		engine.Engine
+	engine		options.Engine
 	//room admin id [const]
 	admin		int
 	//room id in rooms store [const]

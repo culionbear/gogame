@@ -55,7 +55,7 @@ func getRoomInformation(ctx iris.Context) {
 }
 
 func getRoomConfig(ctx iris.Context) {
-	
+
 }
 
 func updateRoomConfig(ctx iris.Context) {

@@ -1,4 +1,4 @@
-package engine
+package options
 
 import (
 	"game/db"
@@ -25,4 +25,12 @@ type Engine interface {
 	Gamers() []int
 	//Join Gamer in room
 	Join(int, *websocket.Conn) error
+	//Leave room
+	Leave(int)
+	//Disconnect room
+	Disconnect(int)
+	//Start
+	Start() error
+	//End
+	End() error
 }

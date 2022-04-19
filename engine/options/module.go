@@ -6,6 +6,6 @@ const (
 	STATUS_ENDING
 )
 
-type Value interface {
-	~ int | ~ string | ~ float64 | ~ float32 | ~ bool
+func Path(name string) string {
+	return "/var/gogame/logo/" + name + ".png"
 }
