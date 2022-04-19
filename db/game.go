@@ -10,7 +10,7 @@ type Game struct {
 	Rule		string	`json:"rule"`
 }
 
-func (m *Manager)GetGameList() ([]Game, error) {
+func (m *Manager) GetGameList() ([]Game, error) {
 	rows, err := m.handler.Query(
 		"select id,name,logo,max_gamer,min_gamer,infor,rule from game",
 	)
@@ -38,7 +38,7 @@ func (m *Manager)GetGameList() ([]Game, error) {
 	return list, nil
 }
 
-func (m *Manager)GetGameInformation(id int) (Game, error) {
+func (m *Manager) GetGameInformation(id int) (Game, error) {
 	var msg Game
 	err := m.handler.QueryRow(
 		"select id,name,logo,max_gamer,min_gamer,infor,rule from game where id = ?",
@@ -53,4 +53,29 @@ func (m *Manager)GetGameInformation(id int) (Game, error) {
 		&msg.Rule,
 	)
 	return msg, err
+}
+
+func (m *Manager) CleanGameTable() error {
+	_, err := m.handler.Exec(
+		"truncate table game",
+	)
+	return err
+}
+
+func (m *Manager) AddGame(infor *Game) error {
+	ids, err := m.handler.Exec(
+		"insert into game (name,phone) values (?,?)",
+		infor.Name,
+		infor.Rule,
+		infor.Logo,
+		infor.Infor,
+		infor.MaxGamer,
+		infor.MinGamer,
+	)
+	if err != nil {
+		return err
+	}
+	id, err := ids.LastInsertId()
+	infor.ID = int(id)
+	return err
 }

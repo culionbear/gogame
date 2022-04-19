@@ -50,8 +50,7 @@ func onConnect(conn *websocket.Conn) error {
 		conn.Close()
 		return err
 	}
-	if !rooms.Default.Judge(infor.Room, infor.ID) {
-		err = errors.New("error room")
+	if err = rooms.Default.Join(infor.Room, infor.ID, conn); err != nil {
 		tool.WriteWsErrorMessage(conn, err)
 		conn.Close()
 		return err

@@ -7,6 +7,8 @@ import (
 	"math/rand"
 	"sync"
 	"time"
+
+	"github.com/kataras/iris/v12/websocket"
 )
 
 func init() {
@@ -27,12 +29,15 @@ func New() *Manager {
 	}
 }
 
-func (m *Manager) NewRoom(infor db.Game, id int) string {
+func (m *Manager) NewRoom(gameID, id int) (string, error) {
 	var key string
 	for {
 		key = fmt.Sprintf("%06d", rand.Intn(1000000))
 		if _, ok := m.roomStore.Load(key); !ok {
-			room := newRoom(infor, id, key)
+			room, err := newRoom(gameID, id, key)
+			if err != nil {
+				return "", err
+			}
 			m.roomStore.Store(
 				key,
 				room,
@@ -41,7 +46,7 @@ func (m *Manager) NewRoom(infor db.Game, id int) string {
 			break
 		}
 	}
-	return key
+	return key, nil
 }
 
 func (m *Manager) GetRoomInformation(key string) (db.Game, int, error) {
@@ -71,11 +76,11 @@ func (m *Manager) tick(room *Room) {
 	}
 }
 
-func (m *Manager) Judge(key string, id int) bool {
+func (m *Manager) Join(key string, id int, conn *websocket.Conn) error {
 	v, ok := m.roomStore.Load(key)
 	if !ok {
-		return false
+		return errors.New("error room id")
 	}
 	r, _ := v.(*Room)
-	return r.Judge(id)
+	return r.Join(id, conn)
 }

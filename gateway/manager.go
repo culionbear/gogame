@@ -2,7 +2,9 @@ package gateway
 
 import (
 	"game/rooms"
+	"net/http"
 
+	"github.com/rs/cors"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/websocket"
 )
@@ -22,6 +24,7 @@ func New() *Manager {
 }
 
 func (m *Manager) Run(addr string) error {
+	m.loadCors()
 	return m.GatewayHandler.Run(
 		iris.Addr(addr),
 	)
@@ -34,4 +37,17 @@ func (m *Manager) AddParty(api HttpManager) {
 func (m *Manager) AddWS(api WSManager) {
 	path, handler := api.Register()
 	m.GatewayHandler.Get(path, websocket.Handler(handler))
+}
+
+func (m *Manager) loadCors() {
+	c := cors.New(
+		cors.Options{
+			AllowedOrigins:   []string{"*"},
+			AllowedMethods:   []string{http.MethodPost, http.MethodGet, http.MethodPut},
+			MaxAge:           3600,
+			AllowedHeaders:   []string{"*"},
+			AllowCredentials: true,
+		},
+	)
+	m.GatewayHandler.WrapRouter(c.ServeHTTP)
 }

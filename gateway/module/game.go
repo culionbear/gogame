@@ -45,12 +45,11 @@ func createGameRoom(ctx iris.Context) {
 		return
 	}
 	id := auth.Default.GetID(ctx)
-	infor, err := db.Default.GetGameInformation(msg.ID)
+	key, err := rooms.Default.NewRoom(msg.ID, int(id))
 	if err != nil {
-		tool.SendBadGatewayMessage(ctx, "游戏信息获取失败", err)
+		tool.SendBadGatewayMessage(ctx, "房间创建失败", err)
 		return
 	}
-	key := rooms.Default.NewRoom(infor, int(id))
 	tool.SendOKMessage(ctx, "房间创建成功", iris.Map{
 		"key": key,
 	})

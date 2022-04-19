@@ -2,42 +2,42 @@ package rooms
 
 import (
 	"game/db"
-	"sync"
+	"game/engine"
 	"time"
-)
 
-const (
-	STATUS_READY	= iota
-	STATUS_PLAYING
-	STATUS_ENDING
+	"github.com/kataras/iris/v12/websocket"
 )
 
 type Room struct {
+	//game information [const]
 	information	db.Game
-	//TODO:set game engine
-	engine		any
-	number		int
-	status		int
+	//game engine
+	engine		engine.Engine
+	//room admin id [const]
 	admin		int
-	gamers		[]int
+	//room id in rooms store [const]
 	id			string
+	//send close signal to rooms manager
 	signal		chan string
+	//send close when game over
 	closer		chan bool
-	mu			*sync.RWMutex
 }
 
-func newRoom(infor db.Game, admin int, id string) *Room {
+func newRoom(gameID, admin int, id string) (*Room, error) {
+	e, err := engine.Default.NewGameEngine(gameID)
+	if err != nil {
+		return nil, err
+	}
 	m := &Room{
-		information: infor,
+		information: *e.GameInformation(),
+		engine: e,
 		admin: admin,
 		id: id,
-		gamers: make([]int, 0),
 		signal: make(chan string),
 		closer: make(chan bool),
-		mu: new(sync.RWMutex),
 	}
 	go m.close()
-	return m
+	return m, nil
 }
 
 func (m *Room) close() {
@@ -55,38 +55,28 @@ func (m *Room) close() {
 }
 
 func (m *Room) GetGamers() []int {
-	gamers := make([]int, 0)
-	m.mu.RLock()
-	for _, v := range m.gamers {
-		gamers = append(gamers, v)
-	}
-	m.mu.RUnlock()
-	return gamers
+	return m.engine.Gamers()
 }
 
 func (m *Room) GetNumber() int {
-	var number int
-	m.mu.RLock()
-	number = m.number
-	m.mu.RUnlock()
-	return number
+	return m.engine.Number()
 }
 
 func (m *Room) GetStatus() int {
-	var status int
-	m.mu.RLock()
-	status = m.status
-	m.mu.RUnlock()
-	return status
+	return m.engine.Status()
 }
 
-func (m *Room) Judge(id int) bool {
-	m.mu.RLock()
-	defer m.mu.RUnlock()
-	for _, v := range m.gamers {
-		if v == id {
-			return false
-		}
+func (m *Room) Join(id int, conn *websocket.Conn) error {
+	return m.engine.Join(id, conn)
+}
+
+func (m *Room) SetConfig(id int, buf []byte) (bool, error) {
+	if id != m.admin {
+		return false, nil
 	}
-	return m.number + 1 <= m.information.MaxGamer
+	return true, m.engine.SetConfig(buf)
+}
+
+func (m *Room) GetConfig() ([]byte, error) {
+	return m.engine.Config()
 }
