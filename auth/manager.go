@@ -16,6 +16,7 @@ type Manager struct {
 	phone		*phone.Manager
 	db			db.Manager
 	token		*token.Manager
+	config		*Config
 }
 
 var Default *Manager
@@ -43,6 +44,7 @@ func New(config *Config) (*Manager, error) {
 		db: dbClient,
 		phone: phoneClient,
 		token: token.New(config.Token),
+		config: config,
 	}, nil
 }
 

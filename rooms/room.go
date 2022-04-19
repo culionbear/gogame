@@ -71,3 +71,22 @@ func (m *Room) GetNumber() int {
 	m.mu.RUnlock()
 	return number
 }
+
+func (m *Room) GetStatus() int {
+	var status int
+	m.mu.RLock()
+	status = m.status
+	m.mu.RUnlock()
+	return status
+}
+
+func (m *Room) Judge(id int) bool {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	for _, v := range m.gamers {
+		if v == id {
+			return false
+		}
+	}
+	return m.number + 1 <= m.information.MaxGamer
+}

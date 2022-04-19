@@ -70,3 +70,12 @@ func (m *Manager) tick(room *Room) {
 		break
 	}
 }
+
+func (m *Manager) Judge(key string, id int) bool {
+	v, ok := m.roomStore.Load(key)
+	if !ok {
+		return false
+	}
+	r, _ := v.(*Room)
+	return r.Judge(id)
+}
