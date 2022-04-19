@@ -8,7 +8,7 @@ import (
 )
 
 type Manager struct {
-	store	map[int]options.NewEngine
+	store map[int]options.NewEngine
 }
 
 var Default = New()
@@ -24,7 +24,7 @@ func New() *Manager {
 }
 
 func (m *Manager) plugins() []options.NewEngine {
-	return []options.NewEngine {
+	return []options.NewEngine{
 		tooth.NewEngine,
 	}
 }

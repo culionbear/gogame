@@ -11,12 +11,12 @@ import (
 )
 
 type Information struct {
-	ID		int		`json:"id"`
-	Room	string	`json:"room"`
-	Rand	int64	`json:"rand"`
+	ID   int    `json:"id"`
+	Room string `json:"room"`
+	Rand int64  `json:"rand"`
 }
 
-type Room struct {}
+type Room struct{}
 
 func init() {
 	gateway.Default.AddParty(new(Game))
@@ -24,13 +24,13 @@ func init() {
 
 func (m *Room) Register() (string, func(iris.Party)) {
 	return "/room",
-	func (p iris.Party) {
-		p.Use(auth.Default.Service())
-		p.Post("/join", join)
-		p.Get("/infor/{id}", getRoomInformation)
-		p.Get("/config/{id}", getRoomConfig)
-		p.Post("/update/config", updateRoomConfig)
-	}
+		func(p iris.Party) {
+			p.Use(auth.Default.Service())
+			p.Post("/join", join)
+			p.Get("/infor/{id}", getRoomInformation)
+			p.Get("/config/{id}", getRoomConfig)
+			p.Post("/update/config", updateRoomConfig)
+		}
 }
 
 func join(ctx iris.Context) {
@@ -49,7 +49,7 @@ func getRoomInformation(ctx iris.Context) {
 		return
 	}
 	tool.SendOKMessage(ctx, "信息查询成功", iris.Map{
-		"infor": infor,
+		"infor":  infor,
 		"number": num,
 	})
 }

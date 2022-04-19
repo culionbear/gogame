@@ -11,17 +11,17 @@ import (
 
 type Room struct {
 	//game information [const]
-	information	db.Game
+	information db.Game
 	//game engine
-	engine		options.Engine
+	engine options.Engine
 	//room admin id [const]
-	admin		int
+	admin int
 	//room id in rooms store [const]
-	id			string
+	id string
 	//send close signal to rooms manager
-	signal		chan string
+	signal chan string
 	//send close when game over
-	closer		chan bool
+	closer chan bool
 }
 
 func newRoom(gameID, admin int, id string) (*Room, error) {
@@ -31,11 +31,11 @@ func newRoom(gameID, admin int, id string) (*Room, error) {
 	}
 	m := &Room{
 		information: *e.GameInformation(),
-		engine: e,
-		admin: admin,
-		id: id,
-		signal: make(chan string),
-		closer: make(chan bool),
+		engine:      e,
+		admin:       admin,
+		id:          id,
+		signal:      make(chan string),
+		closer:      make(chan bool),
 	}
 	go m.close()
 	return m, nil
@@ -45,10 +45,10 @@ func (m *Room) close() {
 	ticker := time.NewTicker(time.Hour * time.Duration(12))
 	for {
 		select {
-		case <- ticker.C :
+		case <-ticker.C:
 			m.signal <- m.id
 			break
-		case <- m.closer:
+		case <-m.closer:
 			m.signal <- m.id
 			break
 		}

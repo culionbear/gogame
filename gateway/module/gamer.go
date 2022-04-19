@@ -9,7 +9,7 @@ import (
 	"github.com/kataras/iris/v12"
 )
 
-type Gamer struct {}
+type Gamer struct{}
 
 func init() {
 	gateway.Default.AddParty(new(Gamer))
@@ -17,16 +17,16 @@ func init() {
 
 func (m *Gamer) Register() (string, func(iris.Party)) {
 	return "/gamer",
-	func (p iris.Party) {
-		p.Use(auth.Default.Service())
-		p.Get("/name", getName)
-		p.Get("/phone", getPhone)
-		p.PartyFunc("/update", func(u iris.Party) {
-			u.Post("/password", updatePassword)
-			u.Post("/name", updateName)
-		})
-		p.Get("/code", getCodeWithID)
-	}
+		func(p iris.Party) {
+			p.Use(auth.Default.Service())
+			p.Get("/name", getName)
+			p.Get("/phone", getPhone)
+			p.PartyFunc("/update", func(u iris.Party) {
+				u.Post("/password", updatePassword)
+				u.Post("/name", updateName)
+			})
+			p.Get("/code", getCodeWithID)
+		}
 }
 
 func getName(ctx iris.Context) {
@@ -58,8 +58,8 @@ func getPhone(ctx iris.Context) {
 
 func updatePassword(ctx iris.Context) {
 	var msg struct {
-		Code		string	`json:"code"`
-		Password	string	`json:"password"`
+		Code     string `json:"code"`
+		Password string `json:"password"`
 	}
 	if err := ctx.ReadJSON(&msg); err != nil {
 		tool.SendBadRequestMessage(ctx, err)
@@ -86,7 +86,7 @@ func updatePassword(ctx iris.Context) {
 
 func updateName(ctx iris.Context) {
 	var msg struct {
-		Name	string	`json:"name"`
+		Name string `json:"name"`
 	}
 	if err := ctx.ReadJSON(&msg); err != nil {
 		tool.SendBadRequestMessage(ctx, err)

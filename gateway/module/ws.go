@@ -15,7 +15,7 @@ import (
 	"github.com/kataras/neffos/gorilla"
 )
 
-type WS struct {}
+type WS struct{}
 
 func init() {
 	gateway.Default.AddWS(new(WS))
@@ -26,7 +26,7 @@ func (m *WS) Register() (string, *neffos.Server) {
 		gorilla.Upgrader(
 			gorillaWs.Upgrader{
 				CheckOrigin: func(*http.Request) bool {
-						return true
+					return true
 				},
 			},
 		),
@@ -59,7 +59,7 @@ func onConnect(conn *websocket.Conn) error {
 }
 
 func onDisconnect(conn *websocket.Conn) {
-	
+
 }
 
 func readInformation(c *websocket.Conn) (Information, error) {

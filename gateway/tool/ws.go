@@ -10,7 +10,7 @@ import (
 func WriteWsMessage(conn *websocket.Conn, msg iris.Map) {
 	buf, _ := json.Marshal(msg)
 	conn.Write(websocket.Message{
-		Body: buf,
+		Body:     buf,
 		IsNative: true,
 	})
 }
@@ -20,8 +20,8 @@ func WriteWsErrorMessage(conn *websocket.Conn, err error) {
 		"msg": "与房间的连接断开...",
 	})
 	conn.Write(websocket.Message{
-		Body: buf,
-		Err: err,
+		Body:     buf,
+		Err:      err,
 		IsNative: true,
 	})
 }

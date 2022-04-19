@@ -1,13 +1,13 @@
 package db
 
 type Game struct {
-	ID			int		`json:"id"`
-	Name		string	`json:"name"`
-	Logo		string	`json:"logo"`
-	MaxGamer	int		`json:"max_gamer"`
-	MinGamer	int		`json:"min_gamer"`
-	Infor		string	`json:"infor"`
-	Rule		string	`json:"rule"`
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	Logo     string `json:"logo"`
+	MaxGamer int    `json:"max_gamer"`
+	MinGamer int    `json:"min_gamer"`
+	Infor    string `json:"infor"`
+	Rule     string `json:"rule"`
 }
 
 func (m *Manager) GetGameList() ([]Game, error) {

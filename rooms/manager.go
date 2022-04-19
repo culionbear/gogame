@@ -16,15 +16,15 @@ func init() {
 }
 
 type Manager struct {
-	roomStore	*sync.Map
-	gamerStore	*sync.Map
+	roomStore  *sync.Map
+	gamerStore *sync.Map
 }
 
 var Default = New()
 
 func New() *Manager {
 	return &Manager{
-		roomStore: new(sync.Map),
+		roomStore:  new(sync.Map),
 		gamerStore: new(sync.Map),
 	}
 }
@@ -61,7 +61,7 @@ func (m *Manager) GetRoomInformation(key string) (db.Game, int, error) {
 func (m *Manager) tick(room *Room) {
 	ch := room.signal
 	for {
-		key := <- ch
+		key := <-ch
 		gamers := room.GetGamers()
 		for _, id := range gamers {
 			if v, ok := m.gamerStore.Load(id); ok {

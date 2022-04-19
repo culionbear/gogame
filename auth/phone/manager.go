@@ -15,20 +15,20 @@ func init() {
 }
 
 type Config struct {
-	SecretID	string	`json:"secret_id"`
-	SecretKey	string	`json:"secret_key"`
-	TemplateID	string	`json:"template_id"`
-	SmsSdkAppid	string	`json:"sms_sdk_appid"`
-	Sign		string	`json:"sign"`
+	SecretID    string `json:"secret_id"`
+	SecretKey   string `json:"secret_key"`
+	TemplateID  string `json:"template_id"`
+	SmsSdkAppid string `json:"sms_sdk_appid"`
+	Sign        string `json:"sign"`
 }
 
 type Manager struct {
-	config	*Config
-	handler	*sms.Client
+	config  *Config
+	handler *sms.Client
 }
 
 func New(config *Config) (*Manager, error) {
-	credential := common.NewCredential (
+	credential := common.NewCredential(
 		config.SecretID,
 		config.SecretKey,
 	)
@@ -39,7 +39,7 @@ func New(config *Config) (*Manager, error) {
 		return nil, err
 	}
 	return &Manager{
-		config: config,
+		config:  config,
 		handler: client,
 	}, nil
 }
@@ -49,7 +49,7 @@ func (m *Manager) SendCode(phone string) (string, error) {
 
 	request.PhoneNumberSet = common.StringPtrs(
 		[]string{
-			fmt.Sprintf("+86%s",phone),
+			fmt.Sprintf("+86%s", phone),
 		},
 	)
 

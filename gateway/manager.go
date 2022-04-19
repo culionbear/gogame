@@ -4,21 +4,21 @@ import (
 	"game/rooms"
 	"net/http"
 
-	"github.com/rs/cors"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/websocket"
+	"github.com/rs/cors"
 )
 
 type Manager struct {
-	RoomHandler		*rooms.Manager
-	GatewayHandler	*iris.Application
+	RoomHandler    *rooms.Manager
+	GatewayHandler *iris.Application
 }
 
 var Default = New()
 
 func New() *Manager {
 	return &Manager{
-		RoomHandler: rooms.New(),
+		RoomHandler:    rooms.New(),
 		GatewayHandler: iris.New(),
 	}
 }

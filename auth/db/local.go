@@ -7,12 +7,12 @@ import (
 )
 
 type information struct {
-	value	string
-	t		time.Time
+	value string
+	t     time.Time
 }
 
 type LocalManager struct {
-	store		*sync.Map
+	store *sync.Map
 }
 
 func NewLocalManager() *LocalManager {
@@ -26,7 +26,7 @@ func NewLocalManager() *LocalManager {
 func (m *LocalManager) tick() {
 	ticker := time.NewTicker(time.Minute)
 	for {
-		now := <- ticker.C
+		now := <-ticker.C
 		m.store.Range(
 			func(key, value any) bool {
 				infor, _ := value.(*information)
@@ -42,7 +42,7 @@ func (m *LocalManager) tick() {
 func (m *LocalManager) Push(key, value string, t time.Duration) error {
 	m.store.Store(key, &information{
 		value: value,
-		t: time.Now().Add(t),
+		t:     time.Now().Add(t),
 	})
 	return nil
 }

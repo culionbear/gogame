@@ -9,7 +9,7 @@ func (m *Manager) SendCode(phone string) error {
 	if err != nil {
 		return err
 	}
-	m.db.Push(phone, code, time.Minute * 15)
+	m.db.Push(phone, code, time.Minute*15)
 	return nil
 }
 

@@ -9,18 +9,18 @@ import (
 )
 
 type Config struct {
-	Addr		string			`json:"addr"`
-	Password	string			`json:"password,omitempty"`
+	Addr     string `json:"addr"`
+	Password string `json:"password,omitempty"`
 }
 
 type RedisManager struct {
-	handler		*redis.Client
+	handler *redis.Client
 }
 
 func NewRedisManager(config *Config) (*RedisManager, error) {
 	client := redis.NewClient(
 		&redis.Options{
-			Addr: config.Addr,
+			Addr:     config.Addr,
 			Password: config.Password,
 		},
 	)

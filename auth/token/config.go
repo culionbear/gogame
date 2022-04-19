@@ -1,5 +1,5 @@
 package token
 
 type Config struct {
-	Key		string	`json:"key"`
+	Key string `json:"key"`
 }

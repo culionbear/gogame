@@ -12,9 +12,9 @@ func init() {
 }
 
 type Handler struct {
-	tooth	[28]bool
-	point	int
-	mu		*sync.RWMutex
+	tooth [28]bool
+	point int
+	mu    *sync.RWMutex
 }
 
 func NewHandler() *Handler {

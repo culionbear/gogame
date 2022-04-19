@@ -7,7 +7,7 @@ import (
 )
 
 type Config struct {
-	Redis		*db.Config		`json:"redis,omitempty"`
-	Phone		*phone.Config	`json:"phone"`
-	Token		*token.Config	`json:"token"`
+	Redis *db.Config    `json:"redis,omitempty"`
+	Phone *phone.Config `json:"phone"`
+	Token *token.Config `json:"token"`
 }

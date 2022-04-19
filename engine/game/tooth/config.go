@@ -1,5 +1,5 @@
 package tooth
 
 type Config struct {
-	Round	int		`json:"回合数"`
+	Round int `json:"回合数"`
 }

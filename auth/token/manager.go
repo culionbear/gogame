@@ -14,14 +14,14 @@ func init() {
 }
 
 type Manager struct {
-	key		string
-	method *jwt.SigningMethodHMAC
-	handler	*jardiniere.Middleware
+	key     string
+	method  *jwt.SigningMethodHMAC
+	handler *jardiniere.Middleware
 }
 
 func New(config *Config) *Manager {
 	m := &Manager{
-		key: config.Key,
+		key:    config.Key,
 		method: jwt.SigningMethodHS256,
 	}
 	m.handler = jardiniere.New(jardiniere.Config{
@@ -29,7 +29,7 @@ func New(config *Config) *Manager {
 			return []byte(m.key), nil
 		},
 		SigningMethod: m.method,
-		ErrorHandler: func(ctx iris.Context, err error){
+		ErrorHandler: func(ctx iris.Context, err error) {
 			ctx.StatusCode(iris.StatusMethodNotAllowed)
 			ctx.JSON(iris.Map{
 				"msg": "用户信息已过期",
@@ -42,10 +42,10 @@ func New(config *Config) *Manager {
 
 func (m *Manager) GetKey(id int) (string, error) {
 	table := jwt.MapClaims{
-		"iat": time.Now().Unix(),
-		"exp": time.Now().Add(time.Duration(7 * 24) * time.Hour).Unix(),
-		"iss": "DG",
-		"id": id,
+		"iat":  time.Now().Unix(),
+		"exp":  time.Now().Add(time.Duration(7*24) * time.Hour).Unix(),
+		"iss":  "DG",
+		"id":   id,
 		"rand": rand.Int(),
 	}
 	return jwt.NewWithClaims(m.method, table).SignedString([]byte(m.key))

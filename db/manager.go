@@ -1,8 +1,8 @@
 package db
 
 import (
-	_ "github.com/go-sql-driver/mysql"
 	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type Manager struct {
@@ -17,12 +17,12 @@ func Init(config *Config) error {
 	return err
 }
 
-func New(config *Config) (*Manager, error){
+func New(config *Config) (*Manager, error) {
 	handler, err := sql.Open(
 		"mysql",
 		config.String(),
 	)
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
 	return &Manager{

@@ -10,7 +10,7 @@ import (
 	"github.com/kataras/iris/v12"
 )
 
-type Options struct {}
+type Options struct{}
 
 func init() {
 	gateway.Default.AddParty(new(Options))
@@ -18,24 +18,24 @@ func init() {
 
 func (m *Options) Register() (string, func(iris.Party)) {
 	return "/options",
-	func (p iris.Party) {
-		p.PartyFunc("/login", func(l iris.Party) {
-			l.Post("/normal", loginNormal)
-			l.Post("/phone", loginPhone)
-		})
-		p.PartyFunc("/exists", func(e iris.Party) {
-			e.Get("/name/{str}", existsName)
-			e.Get("/phone/{str}", existsPhone)
-		})
-		p.Post("/register", register)
-		p.Get("/code/{phone}", getCodeWithPhone)
-	}
+		func(p iris.Party) {
+			p.PartyFunc("/login", func(l iris.Party) {
+				l.Post("/normal", loginNormal)
+				l.Post("/phone", loginPhone)
+			})
+			p.PartyFunc("/exists", func(e iris.Party) {
+				e.Get("/name/{str}", existsName)
+				e.Get("/phone/{str}", existsPhone)
+			})
+			p.Post("/register", register)
+			p.Get("/code/{phone}", getCodeWithPhone)
+		}
 }
 
 func loginNormal(ctx iris.Context) {
 	var msg struct {
-		User		string	`json:"user"`
-		Password	string	`json:"password"`
+		User     string `json:"user"`
+		Password string `json:"password"`
 	}
 	if err := ctx.ReadJSON(&msg); err != nil {
 		tool.SendBadRequestMessage(ctx, err)
@@ -58,8 +58,8 @@ func loginNormal(ctx iris.Context) {
 
 func loginPhone(ctx iris.Context) {
 	var msg struct {
-		Phone	string	`json:"phone"`
-		Code	string	`json:"code"`
+		Phone string `json:"phone"`
+		Code  string `json:"code"`
 	}
 	if err := ctx.ReadJSON(&msg); err != nil {
 		tool.SendBadRequestMessage(ctx, err)
@@ -87,9 +87,9 @@ func loginPhone(ctx iris.Context) {
 
 func register(ctx iris.Context) {
 	var msg struct {
-		Name	string	`json:"name"`
-		Phone	string	`json:"phone"`
-		Code	string	`json:"code"`
+		Name  string `json:"name"`
+		Phone string `json:"phone"`
+		Code  string `json:"code"`
 	}
 	if err := ctx.ReadJSON(&msg); err != nil {
 		tool.SendBadRequestMessage(ctx, err)

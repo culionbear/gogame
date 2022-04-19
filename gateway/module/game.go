@@ -10,7 +10,7 @@ import (
 	"github.com/kataras/iris/v12"
 )
 
-type Game struct {}
+type Game struct{}
 
 func init() {
 	gateway.Default.AddParty(new(Game))
@@ -18,11 +18,11 @@ func init() {
 
 func (m *Game) Register() (string, func(iris.Party)) {
 	return "/game",
-	func (p iris.Party) {
-		p.Use(auth.Default.Service())
-		p.Get("/list", getGameList)
-		p.Post("/create", createGameRoom)
-	}
+		func(p iris.Party) {
+			p.Use(auth.Default.Service())
+			p.Get("/list", getGameList)
+			p.Post("/create", createGameRoom)
+		}
 }
 
 func getGameList(ctx iris.Context) {
@@ -38,7 +38,7 @@ func getGameList(ctx iris.Context) {
 
 func createGameRoom(ctx iris.Context) {
 	var msg struct {
-		ID	int	`json:"id"`
+		ID int `json:"id"`
 	}
 	if err := ctx.ReadJSON(&msg); err != nil {
 		tool.SendBadRequestMessage(ctx, err)

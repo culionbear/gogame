@@ -6,13 +6,13 @@ import (
 	"encoding/hex"
 )
 
-func (m *Manager)MD5(str string) string {
+func (m *Manager) MD5(str string) string {
 	Md5Handle := md5.New()
 	Md5Handle.Write([]byte(str))
 	return hex.EncodeToString(Md5Handle.Sum(nil))
 }
 
-func (m *Manager)AesEncrypt(buf []byte) string{
+func (m *Manager) AesEncrypt(buf []byte) string {
 	cipher, _ := aes.NewCipher([]byte(m.config.Token.Key))
 	length := (len(buf) + aes.BlockSize) / aes.BlockSize
 	plain := make([]byte, length*aes.BlockSize)
@@ -29,7 +29,7 @@ func (m *Manager)AesEncrypt(buf []byte) string{
 	return hex.EncodeToString(res)
 }
 
-func (m *Manager)AesDecrypt(token string) ([]byte, error) {
+func (m *Manager) AesDecrypt(token string) ([]byte, error) {
 	buf, err := hex.DecodeString(token)
 	if err != nil {
 		return nil, err
@@ -37,7 +37,7 @@ func (m *Manager)AesDecrypt(token string) ([]byte, error) {
 	return m.aesDecryptECB(buf), nil
 }
 
-func (m *Manager)aesDecryptECB(buf []byte) []byte {
+func (m *Manager) aesDecryptECB(buf []byte) []byte {
 	cipher, _ := aes.NewCipher([]byte(m.config.Token.Key))
 	res := make([]byte, len(buf))
 	//

@@ -13,31 +13,31 @@ import (
 func NewEngine() options.Engine {
 	return &Manager{
 		information: &db.Game{
-			Name: "按牙齿",
+			Name:     "按牙齿",
 			MaxGamer: 12,
 			MinGamer: 2,
-			Logo: options.Path("tooth"),
-			Infor: "当心鳄鱼咬到你！",
-			Rule: "每人每回合按一次牙齿，若被咬到则为失败",
+			Logo:     options.Path("tooth"),
+			Infor:    "当心鳄鱼咬到你！",
+			Rule:     "每人每回合按一次牙齿，若被咬到则为失败",
 		},
-		config: options.New(Config {
+		config: options.New(Config{
 			Round: 16,
 		}),
-		status: options.New(options.STATUS_READY),
-		gamers: options.NewVector(),
+		status:     options.New(options.STATUS_READY),
+		gamers:     options.NewVector(),
 		gamerConns: new(sync.Map),
-		handler: NewHandler(),
+		handler:    NewHandler(),
 	}
 }
 
 type Manager struct {
-	information		*db.Game
-	config			*options.Mu[Config]
-	status			*options.Mu[int]
-	gamers			*options.Vector
-	gamerConns		*sync.Map
+	information *db.Game
+	config      *options.Mu[Config]
+	status      *options.Mu[int]
+	gamers      *options.Vector
+	gamerConns  *sync.Map
 
-	handler			*Handler
+	handler *Handler
 }
 
 func (m *Manager) GameInformation() *db.Game {
@@ -89,7 +89,7 @@ func (m *Manager) Join(id int, conn *websocket.Conn) error {
 	if m.status.Get() != options.STATUS_READY {
 		return errors.New("game is starting or ended")
 	}
-	if m.gamers.Len() + 1 > m.information.MaxGamer {
+	if m.gamers.Len()+1 > m.information.MaxGamer {
 		return errors.New("too many gamers in room")
 	}
 	m.gamers.Add(id)

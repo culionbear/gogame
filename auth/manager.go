@@ -13,10 +13,10 @@ func init() {
 }
 
 type Manager struct {
-	phone		*phone.Manager
-	db			db.Manager
-	token		*token.Manager
-	config		*Config
+	phone  *phone.Manager
+	db     db.Manager
+	token  *token.Manager
+	config *Config
 }
 
 var Default *Manager
@@ -39,11 +39,10 @@ func New(config *Config) (*Manager, error) {
 		return nil, err
 	}
 
-
 	return &Manager{
-		db: dbClient,
-		phone: phoneClient,
-		token: token.New(config.Token),
+		db:     dbClient,
+		phone:  phoneClient,
+		token:  token.New(config.Token),
 		config: config,
 	}, nil
 }
